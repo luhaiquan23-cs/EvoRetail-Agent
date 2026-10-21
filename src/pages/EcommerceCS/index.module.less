@@ -1,0 +1,695 @@
+/* ==========================================================================
+   现代轻奢极简白 (Apple / Linear 风格) 毛玻璃 3C 电商客服工作台样式
+   ========================================================================== */
+
+:global {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f8fafc;
+    overflow: hidden;
+  }
+}
+
+.workspaceWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: 
+    radial-gradient(at 0% 0%, rgba(22, 93, 255, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(15, 198, 194, 0.05) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(114, 46, 209, 0.03) 0px, transparent 50%),
+    #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+/* 顶部极简导航栏 (Glassmorphism Header) */
+.glassHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(229, 230, 235, 0.8);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+  z-index: 50;
+
+  .brandCluster {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .brandBadgeIcon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #165dff 0%, #0fc6c2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(22, 93, 255, 0.25);
+    }
+
+    .titleGroup {
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        color: #1d2129;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .subSubtitle {
+        margin: 0;
+        font-size: 12px;
+        color: #86909c;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .liveDot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #00b42a;
+          box-shadow: 0 0 6px rgba(0, 180, 42, 0.6);
+        }
+      }
+    }
+  }
+
+  .headerMetaBadges {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .pillBadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: rgba(242, 243, 245, 0.85);
+      color: #4e5969;
+      border: 1px solid rgba(229, 230, 235, 0.6);
+      transition: all 0.2s;
+
+      &.highlight {
+        background: rgba(232, 243, 255, 0.9);
+        color: #165dff;
+        border-color: rgba(148, 191, 255, 0.6);
+      }
+
+      &.secure {
+        background: rgba(232, 255, 234, 0.9);
+        color: #00b42a;
+        border-color: rgba(175, 240, 180, 0.6);
+      }
+    }
+  }
+}
+
+/* 主三栏工作区容器 */
+.threeColumnLayout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 16px 20px;
+  gap: 16px;
+  max-width: 1720px;
+  margin: 0 auto;
+  width: calc(100% - 40px);
+}
+
+/* ==========================================================================
+   左栏：3C 商品选购画廊 (Left Column)
+   ========================================================================== */
+.leftGalleryColumn {
+  width: 290px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
+  padding: 16px;
+  overflow: hidden;
+
+  .columnHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(240, 242, 245, 0.8);
+
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1d2129;
+    }
+
+    .itemCount {
+      font-size: 12px;
+      color: #86909c;
+      background: #f2f3f5;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+  }
+
+  .productListScroll {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 4px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(201, 205, 212, 0.6);
+      border-radius: 4px;
+    }
+  }
+
+  .productCard {
+    padding: 12px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid rgba(229, 230, 235, 0.7);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(22, 93, 255, 0.08);
+      border-color: rgba(148, 191, 255, 0.8);
+    }
+
+    &.activeCard {
+      background: linear-gradient(145deg, #ffffff 0%, #f2f7ff 100%);
+      border: 1.5px solid #165dff;
+      box-shadow: 0 8px 20px rgba(22, 93, 255, 0.12);
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #165dff;
+        border-radius: 4px 0 0 4px;
+      }
+    }
+
+    .cardTopRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+
+      .cardTitle {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1d2129;
+        line-height: 1.4;
+        flex: 1;
+      }
+
+      .priceTag {
+        font-size: 14px;
+        font-weight: 700;
+        color: #f53f3f;
+        margin-left: 6px;
+      }
+    }
+
+    .specTagsWrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+
+      .miniTag {
+        font-size: 11px;
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: #f2f3f5;
+        color: #4e5969;
+        font-weight: 500;
+
+        &.highlightTag {
+          background: #e8f3ff;
+          color: #165dff;
+        }
+      }
+    }
+  }
+
+  .leftFooterNote {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(240, 242, 245, 0.8);
+    font-size: 11px;
+    color: #86909c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* ==========================================================================
+   中栏：核心对话流与流式打字区 (Center Column)
+   ========================================================================== */
+.centerChatColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 36px rgba(149, 157, 165, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 当前咨询 SPU 极简浮动通知条 */
+.activeProductBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(247, 248, 250, 0.7);
+  border-bottom: 1px solid rgba(240, 242, 245, 0.8);
+
+  .bannerLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .productIconBadge {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #e8f3ff;
+      color: #165dff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .bannerTitle {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1d2129;
+    }
+  }
+
+  .bannerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .priceHighlight {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f53f3f;
+    }
+  }
+}
+
+/* 消息瀑布流容器 */
+.messageScrollContainer {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(201, 205, 212, 0.5);
+    border-radius: 6px;
+  }
+}
+
+/* 气泡行样式 */
+.chatMessageItem {
+  display: flex;
+  gap: 14px;
+  max-width: 82%;
+  animation: fadeIn 0.25s ease-out;
+
+  &.userItem {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+
+    .avatarBubble {
+      background: linear-gradient(135deg, #165dff 0%, #3491fa 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(22, 93, 255, 0.2);
+    }
+
+    .speechBubble {
+      background: linear-gradient(145deg, #165dff 0%, #0e50e8 100%);
+      color: #ffffff;
+      border-radius: 18px 18px 4px 18px;
+      box-shadow: 0 4px 16px rgba(22, 93, 255, 0.18);
+    }
+  }
+
+  &.assistantItem {
+    align-self: flex-start;
+
+    .avatarBubble {
+      background: #ffffff;
+      color: #165dff;
+      border: 1px solid rgba(229, 230, 235, 0.8);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .speechBubble {
+      background: #ffffff;
+      color: #1d2129;
+      border-radius: 18px 18px 18px 4px;
+      border: 1px solid rgba(229, 230, 235, 0.7);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+    }
+  }
+
+  .avatarBubble {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .bubbleColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .speechBubble {
+    padding: 14px 18px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    word-break: break-word;
+    white-space: pre-wrap;
+    letter-spacing: 0.1px;
+    position: relative;
+  }
+
+  .messageMetaRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #86909c;
+    padding-left: 2px;
+
+    .auditVerified {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #00b42a;
+      background: rgba(232, 255, 234, 0.8);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .cacheBadge {
+      color: #ff7d00;
+      background: rgba(255, 247, 232, 0.8);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .copyActionBtn {
+      border: none;
+      background: transparent;
+      color: #86909c;
+      cursor: pointer;
+      padding: 0 4px;
+      font-size: 11px;
+      transition: color 0.15s;
+
+      &:hover {
+        color: #165dff;
+      }
+    }
+  }
+}
+
+/* 打字机流光光标 (Glowing stream cursor) */
+.typingCursor {
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  margin-left: 4px;
+  vertical-align: middle;
+  background: #165dff;
+  border-radius: 2px;
+  animation: cursorPulse 0.8s infinite ease-in-out;
+}
+
+@keyframes cursorPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.2; transform: scaleY(0.7); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 底部胶囊快捷提问推荐词 */
+.quickSuggestionStrip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(247, 248, 250, 0.6);
+  border-top: 1px solid rgba(240, 242, 245, 0.8);
+  overflow-x: auto;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    height: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(201, 205, 212, 0.4);
+    border-radius: 3px;
+  }
+
+  .stripLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: #86909c;
+  }
+
+  .pillChip {
+    border: 1px solid rgba(229, 230, 235, 0.8);
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #4e5969;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+
+    &:hover {
+      background: #f2f7ff;
+      color: #165dff;
+      border-color: #165dff;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* 底部输入舱 */
+.chatInputDock {
+  padding: 12px 18px;
+  background: #ffffff;
+  border-top: 1px solid rgba(229, 230, 235, 0.7);
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+
+  .inputField {
+    flex: 1;
+    border-radius: 12px;
+    border: 1px solid #e5e6eb;
+    background: #f7f8fa;
+    transition: all 0.2s;
+
+    &:focus-within {
+      background: #ffffff;
+      border-color: #165dff;
+      box-shadow: 0 0 0 3px rgba(22, 93, 255, 0.12);
+    }
+  }
+
+  .sendActionBtn {
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #165dff 0%, #3491fa 100%);
+    box-shadow: 0 4px 12px rgba(22, 93, 255, 0.25);
+    font-weight: 600;
+    transition: all 0.2s;
+
+    &:hover {
+      box-shadow: 0 6px 16px rgba(22, 93, 255, 0.35);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* ==========================================================================
+   右栏：双 Tab 智能切换工作台 (Right Column)
+   ========================================================================== */
+.rightDashboardColumn {
+  width: 350px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
+  overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.collapsed {
+    width: 48px;
+    padding: 0;
+
+    .panelBody {
+      display: none;
+    }
+  }
+
+  .panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(240, 242, 245, 0.8);
+
+    .tabSegmentGroup {
+      display: flex;
+      background: #f2f3f5;
+      padding: 3px;
+      border-radius: 8px;
+      gap: 2px;
+
+      .segmentBtn {
+        border: none;
+        background: transparent;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #4e5969;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &.activeSegment {
+          background: #ffffff;
+          color: #165dff;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+      }
+    }
+
+    .collapseToggleBtn {
+      border: none;
+      background: transparent;
+      color: #86909c;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #f2f3f5;
+        color: #1d2129;
+      }
+    }
+  }
+
+  .panelBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(201, 205, 212, 0.5);
+      border-radius: 4px;
+    }
+  }
+
+  .glassCard {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(229, 230, 235, 0.7);
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+
+    .cardHeaderLabel {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1d2129;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}

@@ -1,0 +1,99 @@
+[
+  {
+    "spu_code": "HP-VICTUS-16",
+    "title": "HP 光影精灵 16 16.1英寸电竞游戏本",
+    "brand": "HP",
+    "category": "游戏笔记本",
+    "official_price": 6999.00,
+    "display": {
+      "screen_size": 16.1,
+      "resolution": "2.5K (2560x1440)",
+      "refresh_rate": 240,
+      "color_gamut": "100% sRGB",
+      "brightness_nits": 300
+    },
+    "hardware": {
+      "cpu": "i7-14700HX",
+      "gpu": "RTX 4060",
+      "tgp_watt": 140,
+      "ram_installed": "16G (8Gx2) DDR5 5600MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": false,
+      "weight_kg": 2.3
+    },
+    "sales_pitch": [
+      "140W 满血 RTX 4060，主流 3A 大作高画质流畅运行",
+      "双 M.2 扩展槽，支持免保修损耗加装第二根大容量固态",
+      "2.5K 240Hz 高刷电竞屏，告别画面撕裂与拖影"
+    ],
+    "gift_policy": "晒单赠送惠普原装电竞双肩包 + 游戏机械鼠标，支持 2 年全国联保"
+  },
+  {
+    "spu_code": "HP-OMEN-16-SLIM",
+    "title": "HP 暗影精灵 16 Slim 轻薄全金属电竞本",
+    "brand": "HP",
+    "category": "游戏笔记本",
+    "official_price": 8999.00,
+    "display": {
+      "screen_size": 16.0,
+      "resolution": "2.5K (2560x1600) 16:10",
+      "refresh_rate": 240,
+      "color_gamut": "100% sRGB",
+      "brightness_nits": 400
+    },
+    "hardware": {
+      "cpu": "i7-14700HX",
+      "gpu": "RTX 4070",
+      "tgp_watt": 140,
+      "ram_installed": "32G (16Gx2) DDR5 5600MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": true,
+      "weight_kg": 2.1
+    },
+    "sales_pitch": [
+      "全金属超薄机身仅 2.1kg，兼顾硬核电竞与出差便携",
+      "搭载雷电4高速接口，支持 100W PD 快充与显卡坞外接",
+      "满血 RTX 4070 配合 240Hz 400nits 屏幕，画质与帧率拉满"
+    ],
+    "gift_policy": "晒单赠电竞大礼包（鼠标垫+定制双肩包+键盘），支持 1 年意外险"
+  },
+  {
+    "spu_code": "HP-ZHAN-66-G5",
+    "title": "HP 战 66 六代 15.6英寸轻薄商务办公本",
+    "brand": "HP",
+    "category": "轻薄办公本",
+    "official_price": 4299.00,
+    "display": {
+      "screen_size": 15.6,
+      "resolution": "FHD (1920x1080)",
+      "refresh_rate": 60,
+      "color_gamut": "100% sRGB 400nits 低功耗",
+      "brightness_nits": 400
+    },
+    "hardware": {
+      "cpu": "i5-13500H",
+      "gpu": "Intel Iris Xe 集成显卡",
+      "tgp_watt": 45,
+      "ram_installed": "16G DDR4 3200MHz 双通道",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "512GB PCIe 4.0 SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": false,
+      "weight_kg": 1.7
+    },
+    "sales_pitch": [
+      "军工级抗跌落防泼溅认证，办公商务极度耐用可靠",
+      "双内存插槽 + 双 M.2 固态插槽，轻薄本中罕见的大满贯扩展性",
+      "400nits 高亮防眩光低功耗屏幕，户外阳光下依然清晰可读"
+    ],
+    "gift_policy": "赠商务手提电脑包 + 无线静音鼠标，提供 2 年上门服务"
+  }
+]
+
