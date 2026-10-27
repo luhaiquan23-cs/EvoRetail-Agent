@@ -94,6 +94,229 @@
       "400nits 高亮防眩光低功耗屏幕，户外阳光下依然清晰可读"
     ],
     "gift_policy": "赠商务手提电脑包 + 无线静音鼠标，提供 2 年上门服务"
+  },
+  {
+    "spu_code": "HP-OMEN-10-PRO",
+    "title": "HP 暗影精灵 10 旗舰版 16.1英寸发烧级游戏本",
+    "brand": "HP",
+    "category": "旗舰游戏本",
+    "official_price": 12999.00,
+    "display": {
+      "screen_size": 16.1,
+      "resolution": "2.5K (2560x1440)",
+      "refresh_rate": 240,
+      "color_gamut": "100% sRGB 3ms 响应",
+      "brightness_nits": 350
+    },
+    "hardware": {
+      "cpu": "i9-14900HX",
+      "gpu": "RTX 4080",
+      "tgp_watt": 175,
+      "ram_installed": "32G (16Gx2) DDR5 5600MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 96,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": true,
+      "weight_kg": 2.35
+    },
+    "sales_pitch": [
+      "24核32线程 i9-14900HX 搭档 175W 满血 RTX 4080，4K 光追 3A 桌面级算力",
+      "液金导热 + 酷凉风暴 Pro 五热管六风道，高负载持续满帧不降频",
+      "双雷电4满速接口 + 双 M.2 插槽，最高支持扩展至 96GB 内存"
+    ],
+    "gift_policy": "晒单赠 OMEN 旗舰电竞耳机 + 原装双肩包 + 机械鼠标，享 2 年全国联保与专属工程师 1v1 服务"
+  },
+  {
+    "spu_code": "HP-OMEN-TRANSCEND-14",
+    "title": "HP 暗影精灵 10 SLIM 14英寸 2.8K OLED 全能电竞本",
+    "brand": "HP",
+    "category": "轻薄全能游戏本",
+    "official_price": 9499.00,
+    "display": {
+      "screen_size": 14.0,
+      "resolution": "2.8K (2880x1800) 16:10 OLED",
+      "refresh_rate": 120,
+      "color_gamut": "100% DCI-P3 IMAX Enhanced",
+      "brightness_nits": 500
+    },
+    "hardware": {
+      "cpu": "Ultra 9 185H",
+      "gpu": "RTX 4070",
+      "tgp_watt": 65,
+      "ram_installed": "32G LPDDR5x 7467MHz 高频板载",
+      "ram_slots": 1,
+      "ram_max_gb": 32,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 1,
+      "thunderbolt_port": true,
+      "weight_kg": 1.63
+    },
+    "sales_pitch": [
+      "仅 1.63kg 全球超轻 14 英寸游戏本，支持 140W Type-C 氮化镓便携快充",
+      "2.8K 120Hz 0.2ms 疾速响应 OLED 华星屏，通过 IMAX Enhanced 专业色彩认证",
+      "酷睿 Ultra 9 185H 三大 AI 引擎加持，兼顾 Premiere 4K 剪辑、AIGC 本地生图与主流电竞"
+    ],
+    "gift_policy": "晒单赠 140W 氮化镓便携充电头 + 定制内胆包 + 无线双模游戏鼠标"
+  },
+  {
+    "spu_code": "HP-ZHAN-99-G5",
+    "title": "HP 战 99 16英寸设计师建模渲染移动工作站",
+    "brand": "HP",
+    "category": "设计师工作站",
+    "official_price": 7499.00,
+    "display": {
+      "screen_size": 16.0,
+      "resolution": "2.5K (2560x1600) 16:10",
+      "refresh_rate": 165,
+      "color_gamut": "100% sRGB 硬件低蓝光",
+      "brightness_nits": 400
+    },
+    "hardware": {
+      "cpu": "i7-14700HX",
+      "gpu": "RTX 4060",
+      "tgp_watt": 120,
+      "ram_installed": "32G (16Gx2) DDR5 5600MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "1TB PCIe 4.0 NVMe + 预留第二M.2位",
+      "m2_slots_total": 2,
+      "thunderbolt_port": true,
+      "weight_kg": 2.2
+    },
+    "sales_pitch": [
+      "通过 AutoCAD、SolidWorks、Adobe 全系 ISV 专业软件稳定性认证，建筑/工业设计首选",
+      "搭载 83Wh 超大電池与雷电4接口，兼顾大型渲染算力与移动办公续航",
+      "19 项 MIL-STD-810H 军标严苛测试通过，配备双内存插槽与双 M.2 固态位"
+    ],
+    "gift_policy": "晒单赠设计师专业数位板/CAD无线鼠标二选一 + 商务双肩包，享 3 年长效硬件上门保修"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "title": "HP 星 Book Pro 14 2024 14英寸 2.8K OLED AI超轻薄本",
+    "brand": "HP",
+    "category": "AI超轻薄本",
+    "official_price": 5499.00,
+    "display": {
+      "screen_size": 14.0,
+      "resolution": "2.8K (2880x1800) OLED",
+      "refresh_rate": 120,
+      "color_gamut": "100% DCI-P3 10亿色",
+      "brightness_nits": 500
+    },
+    "hardware": {
+      "cpu": "Ultra 7 155H",
+      "gpu": "Intel Arc 锐炫核显",
+      "tgp_watt": 54,
+      "ram_installed": "32G LPDDR5x 7467MHz",
+      "ram_slots": 1,
+      "ram_max_gb": 32,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 1,
+      "thunderbolt_port": true,
+      "weight_kg": 1.44
+    },
+    "sales_pitch": [
+      "三面全金属微磨砂机身轻至 1.44kg，支持 VRR 可变刷新率与 11 小时超长续航",
+      "500万像素高感光 AI 摄像头 + Poly Studio 双阵列降噪麦克风，远程视频会议极度清晰",
+      "配备全功能雷电4接口，支持一线连 4K 显示器与 100W PD 快充"
+    ],
+    "gift_policy": "晒单赠星系列高颜值云朵内胆包 + 蓝牙静音鼠标，支持 2 年全国联保与预装正版 Office"
+  },
+  {
+    "spu_code": "HP-ZHAN-X-14-G10",
+    "title": "HP 战 X 2024 锐龙版 14英寸高端精英商务本",
+    "brand": "HP",
+    "category": "高端商务本",
+    "official_price": 5699.00,
+    "display": {
+      "screen_size": 14.0,
+      "resolution": "2.5K (2560x1600) 16:10",
+      "refresh_rate": 120,
+      "color_gamut": "100% DCI-P3 广色域",
+      "brightness_nits": 500
+    },
+    "hardware": {
+      "cpu": "R7-8840HS",
+      "gpu": "Radeon 780M 高能核显",
+      "tgp_watt": 54,
+      "ram_installed": "32G (16Gx2) DDR5 5600MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 1,
+      "thunderbolt_port": true,
+      "weight_kg": 1.42
+    },
+    "sales_pitch": [
+      "经典 EliteBook 高端模具下放，1.42kg 轻盈全金属机身却保留双 DDR5 可插拔内存槽",
+      "500nits 超高亮防眩光屏 + 按压式指纹识别 + 红外人脸解锁，商务安全拉满",
+      "配备双满速 USB4 (兼容雷电4协议) 接口，支持双 4K 外接扩展"
+    ],
+    "gift_policy": "赠惠普原装真皮商务内胆包 + 无线激光笔鼠标，享 2 年整机上门维修 + 1 年意外损坏免费保修"
+  },
+  {
+    "spu_code": "HP-VICTUS-15-FA",
+    "title": "HP 光影精灵 10 15.6英寸高性价比学生电竞本",
+    "brand": "HP",
+    "category": "游戏笔记本",
+    "official_price": 5199.00,
+    "display": {
+      "screen_size": 15.6,
+      "resolution": "FHD (1920x1080)",
+      "refresh_rate": 144,
+      "color_gamut": "100% sRGB",
+      "brightness_nits": 300
+    },
+    "hardware": {
+      "cpu": "i5-13500H",
+      "gpu": "RTX 4050",
+      "tgp_watt": 75,
+      "ram_installed": "16G (8Gx2) DDR4 3200MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "512GB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": false,
+      "weight_kg": 2.29
+    },
+    "sales_pitch": [
+      "5000元价位段极具性价比的一线品牌游戏本，DLSS 3 帧生成畅玩无畏契约、CS2 与永劫无间",
+      "低调沉稳机身设计，带去大学图书馆、实验室或宿舍均不突兀",
+      "预留双内存插槽与第二根 M.2 固态扩展位，后期升级空间充足"
+    ],
+    "gift_policy": "晒单赠送惠普原装电竞双肩包 + 有线宏编程游戏鼠标，支持 2 年全国联保"
+  },
+  {
+    "spu_code": "HP-ZHAN-66-G7-RYZEN",
+    "title": "HP 战 66 七代 2024 锐龙版 16英寸大屏长续航商用本",
+    "brand": "HP",
+    "category": "轻薄办公本",
+    "official_price": 4199.00,
+    "display": {
+      "screen_size": 16.0,
+      "resolution": "2.5K (2560x1600) 16:10",
+      "refresh_rate": 120,
+      "color_gamut": "100% sRGB",
+      "brightness_nits": 400
+    },
+    "hardware": {
+      "cpu": "R7-7735U",
+      "gpu": "Radeon 680M 核显",
+      "tgp_watt": 35,
+      "ram_installed": "16G (8Gx2) DDR5 4800MHz",
+      "ram_slots": 2,
+      "ram_max_gb": 64,
+      "storage_installed": "1TB PCIe 4.0 NVMe SSD",
+      "m2_slots_total": 2,
+      "thunderbolt_port": false,
+      "weight_kg": 1.75
+    },
+    "sales_pitch": [
+      "16:10 黄金比例 2.5K 120Hz 高刷大屏，自带独立数字小键盘，财务审计与写代码效率神器",
+      "双 DDR5 内存槽 + 双 M.2 固态位，4000元价位难得一见的满配扩展能力",
+      "全天候静音低发热调校，配合 1 年意外险与 2 年免费上门维修，省心可靠"
+    ],
+    "gift_policy": "赠 16 英寸定制手提电脑包 + 无线静音办公鼠标，享 2 年免费上门售后服务"
   }
 ]
-
