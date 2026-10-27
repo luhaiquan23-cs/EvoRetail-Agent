@@ -1,16 +1,18 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 from typing import Optional
 from backend.eval.harness import evaluation_harness
 from backend.evolution.critic import critic_agent
 from backend.evolution.optimizer import optimizer_agent
 from backend.core.database import db
+from backend.api.auth import verify_admin_token
 
 router = APIRouter(prefix="/evolution", tags=["Evolution & Evaluation"])
 
 class SandboxRequest(BaseModel):
     concurrency: Optional[int] = Field(25, description="并发断言线程数")
     sample_size: Optional[int] = Field(100, description="抽取测试用例数(默认100题快速回归)")
+    mode: Optional[str] = Field("mock", description="llm模式: 'mock' 或 'live'")
 
 class RollbackRequest(BaseModel):
     target_version: str = Field(..., description="目标回滚版本，如 v2.0.0")
@@ -18,9 +20,11 @@ class RollbackRequest(BaseModel):
 @router.post("/run-sandbox")
 async def run_sandbox(req: SandboxRequest):
     """触发金标自动化评测沙箱回归跑分"""
+    force_mock = (req.mode != "live")
     report = await evaluation_harness.run_sandbox(
         concurrency=req.concurrency or 25,
-        sample_size=req.sample_size
+        sample_size=req.sample_size,
+        force_mock=force_mock
     )
     return {"code": 200, "data": report}
 
@@ -30,15 +34,15 @@ async def diagnose_conversations():
     report = critic_agent.analyze_recent_conversations()
     return {"code": 200, "data": report}
 
-@router.post("/optimize")
+@router.post("/optimize", dependencies=[Depends(verify_admin_token)])
 async def optimize_and_release():
-    """触发进化工坊：诊断 -> 生成增量候选补丁 -> 跑沙箱回归 -> 自动热发布/熔断"""
+    """触发进化工坊：诊断 -> 生成增量候选补丁 -> 跑沙箱回归 -> 自动热发布/熔断 (需管理员鉴权)"""
     res = await optimizer_agent.optimize_and_evaluate()
     return {"code": 200, "data": res}
 
-@router.post("/rollback")
+@router.post("/rollback", dependencies=[Depends(verify_admin_token)])
 async def rollback_prompt(req: RollbackRequest):
-    """一键秒级版本回滚接口"""
+    """一键秒级版本回滚接口 (需管理员鉴权)"""
     res = optimizer_agent.rollback_version(req.target_version)
     return {"code": 200, "data": res}
 

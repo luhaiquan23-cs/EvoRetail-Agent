@@ -1,6 +1,43 @@
 import re
-from typing import List, Dict, Optional
+import logging
+from typing import List, Dict, Optional, Union, Any
 from backend.core.models.chat_schemas import ChatMessage
+from backend.core.models.buyer_profile import BuyerProfile
+
+logger = logging.getLogger(__name__)
+
+# 尝试导入 tiktoken；若环境不可用则降级至精确 BPE 规则估算器
+try:
+    import tiktoken
+    _cl100k_encoder = tiktoken.get_encoding("cl100k_base")
+
+    def count_tokens(text: str) -> int:
+        if not text:
+            return 0
+        return len(_cl100k_encoder.encode(text))
+except Exception:
+    def count_tokens(text: str) -> int:
+        if not text:
+            return 0
+        # cl100k_base 分词特征估算：中文单字约 1.1~1.3 Token，英文单字约 1.2 Token，符号标点 1 Token
+        chinese_chars = len(re.findall(r'[\u4e00-\u9fff]', text))
+        english_words = len(re.findall(r'[a-zA-Z0-9]+', text))
+        symbols = len(re.findall(r'[^\w\s]', text))
+        spaces = len(re.findall(r'\s+', text))
+        tokens = int(chinese_chars * 1.15 + english_words * 1.25 + symbols * 1.0 + spaces * 0.2)
+        return max(1, tokens)
+
+def count_message_tokens(msg: Dict[str, str]) -> int:
+    """计算单条 OpenAI 消息的 Token 开销（含 <|im_start|>{role} 等元数据开销约 4 Token）"""
+    role = msg.get("role", "")
+    content = msg.get("content", "")
+    return count_tokens(content) + count_tokens(role) + 4
+
+def count_messages_tokens(messages: List[Dict[str, str]]) -> int:
+    """计算消息列表的总 Token 数（加 2 Token 的 assistant 引导开销）"""
+    if not messages:
+        return 0
+    return sum(count_message_tokens(m) for m in messages) + 2
 
 # 停用/无实质信息助词正则（噪声剥离）
 TRIVIAL_WORDS_PATTERN = re.compile(r"^(在吗|在不|你好呀|好的|行吧|知道了|谢谢|嗯嗯|哦哦|收到|好的呢|ok|yes)$", re.IGNORECASE)
@@ -9,8 +46,9 @@ class ContextBudgetManager:
     """
     1000 Token 上下文预算账户管理
     [1] 核心锚定区: ~400 Token (人设、SPIN 策略、风控红线，支持从数据库动态热加载与回滚)
-    [2] 事实注入区: ~300 Token (Pydantic 校验规格 + 知识库匹配)
-    [3] 滑动历史区: ~300 Token (最多保留 2-3 轮精简对话，超额滑动去噪)
+        + 买家画像槽位区 (长记忆常驻，严禁在滑动历史中丢失)
+    [2] 事实注入区: ~300 Token (Pydantic 校验规格 + 知识库匹配 + 工具返回)
+    [3] 滑动历史区: ~300 Token (按 Token 边界自底向上剔除过早历史)
     """
 
     DEFAULT_SYSTEM_CORE = """
@@ -25,6 +63,14 @@ class ContextBudgetManager:
     def __init__(self, prompt_version: str = "v2.0.0", system_prompt: Optional[str] = None):
         self.prompt_version = prompt_version
         self.active_system_prompt = (system_prompt or self.DEFAULT_SYSTEM_CORE).strip()
+
+    @staticmethod
+    def count_tokens(text: str) -> int:
+        return count_tokens(text)
+
+    @staticmethod
+    def count_messages_tokens(messages: List[Dict[str, str]]) -> int:
+        return count_messages_tokens(messages)
 
     def update_active_prompt(self, version: str, system_prompt: str):
         """运行时热更新激活的 Prompt 版本与核心指令文本"""
@@ -46,34 +92,81 @@ class ContextBudgetManager:
         query: str,
         history: List[ChatMessage],
         anchor_fact: Optional[str] = None,
-        rag_context: Optional[str] = None
+        rag_context: Optional[str] = None,
+        buyer_profile: Optional[Union[BuyerProfile, str]] = None,
+        tool_results: Optional[str] = None,
+        total_budget: int = 1000,
+        system_budget: int = 400,
+        facts_budget: int = 300,
+        history_budget: int = 300
     ) -> List[Dict[str, str]]:
-        # 1. 核心系统提示词 (锚定区 - 使用当前动态激活的 System Prompt)
+        # 1. 核心人设与买家画像区 (常驻区，严禁丢失)
         system_blocks = [self.active_system_prompt]
 
-        # 2. 事实注入区 (SPU 规格直查 + 检索内容)
-        if anchor_fact:
-            system_blocks.append(anchor_fact.strip())
-        if rag_context:
-            system_blocks.append(f"【参考服务与售后知识】\n{rag_context.strip()}")
+        if buyer_profile:
+            if isinstance(buyer_profile, BuyerProfile):
+                profile_context = buyer_profile.to_prompt_context()
+            else:
+                profile_context = str(buyer_profile).strip()
+            if profile_context:
+                system_blocks.append(profile_context)
+
+        # 2. 事实与工具注入区 (预算控制 ~300 Token)
+        fact_blocks = []
+        if anchor_fact and anchor_fact.strip():
+            fact_blocks.append(anchor_fact.strip())
+        if rag_context and rag_context.strip():
+            fact_blocks.append(f"【参考服务与售后知识】\n{rag_context.strip()}")
+        if tool_results and tool_results.strip():
+            fact_blocks.append(f"【实时工具查询结果】\n{tool_results.strip()}")
+
+        if fact_blocks:
+            fact_text = "\n\n".join(fact_blocks)
+            # 事实区 Token 限制
+            if count_tokens(fact_text) > facts_budget:
+                if anchor_fact:
+                    system_blocks.append(anchor_fact.strip())
+                    remaining_fact_tokens = facts_budget - count_tokens(anchor_fact)
+                    if remaining_fact_tokens > 50 and rag_context:
+                        clipped_rag = rag_context[:remaining_fact_tokens * 2]
+                        system_blocks.append(f"【参考服务与售后知识】\n{clipped_rag}")
+                else:
+                    system_blocks.append(fact_text[:facts_budget * 2])
+            else:
+                system_blocks.append(fact_text)
 
         assembled_system = "\n\n".join(system_blocks)
+        system_msg = {"role": "system", "content": assembled_system}
+        system_tokens = count_message_tokens(system_msg)
 
-        final_messages = [{"role": "system", "content": assembled_system}]
+        # 3. 当前买家提问
+        cleaned_query = query.strip()
+        query_msg = {"role": "user", "content": cleaned_query}
+        query_tokens = count_message_tokens(query_msg)
 
-        # 3. 滑动历史区 (执行噪声过滤与轮次控制，限制在最近 4 条消息以内)
+        # 4. 滑动历史区 (预算 ~300 Token，且受总预算限制: total_budget - system - query)
+        max_history_budget = min(history_budget, max(0, total_budget - system_tokens - query_tokens - 2))
+
+        # 过滤噪声历史
         valid_history: List[Dict[str, str]] = []
-        for msg in history[-6:]:  # 先截取最近几条
+        for msg in history:
             stripped_content = self.strip_noise(msg.content)
             if stripped_content:
                 valid_history.append({"role": msg.role, "content": stripped_content})
 
-        # 只保留最近 2-3 轮有效问答 (最多 4 条)
-        final_messages.extend(valid_history[-4:])
+        # 从最近的历史开始逆向纳入，超出 Token 预算边界即停止
+        kept_history: List[Dict[str, str]] = []
+        current_history_tokens = 0
 
-        # 4. 当前买家提问
-        final_messages.append({"role": "user", "content": query.strip()})
+        for msg in reversed(valid_history):
+            msg_tokens = count_message_tokens(msg)
+            if current_history_tokens + msg_tokens <= max_history_budget:
+                kept_history.insert(0, msg)
+                current_history_tokens += msg_tokens
+            else:
+                break
 
+        final_messages = [system_msg] + kept_history + [query_msg]
         return final_messages
 
 context_manager = ContextBudgetManager()

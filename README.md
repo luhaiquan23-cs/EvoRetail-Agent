@@ -19,7 +19,7 @@
 ## 📸 系统运行全景图 (有图有真相)
 
 ### 1. 核心导购前台：Pydantic 零幻觉事实锚定 & 本地高速缓存
-> 前台直连买家，实时展示 SPU 硬件规格、双固态/双内存防脱保扩展位与官方联保政策；命中高频问答时触发本地 DiskCache 缓存（**8ms 毫秒级打字机流式秒回，0 Token 成本**）。
+> 前台直连买家，实时展示 SPU 硬件规格、扩展槽位与官方联保政策；命中高频问答时触发本地 DiskCache 缓存（毫秒级本地 DiskCache 流式响应，0 Token 成本）。
 
 ![EvoRetail-Agent 主交互界面与硬件规格抽屉](docs/images/demo_overview.png)
 
@@ -36,7 +36,7 @@
 
 | 行业痛点 | 传统大模型客服表现 | EvoRetail-Agent 解决方案 |
 | :--- | :--- | :--- |
-| **硬件参数幻觉** | 经常虚构显卡功耗（如 140W 编造为 105W）、乱答 M.2 扩展槽，引发买家虚假宣传投诉与退换货 | **Pydantic v2 强类型门禁 + 数据库事实直查**，参数幻觉率降低至 **< 0.5%** |
+| **硬件参数幻觉** | 经常虚构显卡功耗（如 140W 编造为 105W）、乱答 M.2 扩展槽，引发买家虚假宣传投诉与退换货 | **Pydantic v2 强类型门禁 + 数据库事实直查**，硬件断言一票否决 |
 | **上下文腐化与成本失控** | 多轮对话历史越聊越长，首字延迟（TTFT）随轮次线性飙升，大模型注意力分散并遗忘风控红线 | **1000 Token 上下文严格预算账户** + 助词去噪算法，推理成本与延迟维持恒定 $O(1)$ |
 | **导购促单能力缺失** | 传统客服沦为“死板答题机”，不会主动探寻使用场景与促单转化 | 深度融入 **SPIN 顾问式销售法则**，解答硬件后自然关联 3A 游戏/视频剪辑场景并引导赠品活动 |
 | **Prompt 负向演进与盲目迭代**| 工程师针对某款机型人工修了一个 Prompt Bug，却意外破坏了另外十款机型的合规输出 | **500 道金标评测沙箱（Golden Dataset）高并发自动化回归**，设置零容忍门禁与秒级版本热回滚 |
@@ -66,16 +66,16 @@
            +------------v------------+            |            +------------v------------+
            |  1000 Token 上下文预算账户 |            |            |   本地 DiskCache 长期缓存   |
            |  * 400 Token 核心锚定人设 |            |            |   * 提问归一化 MD5 Key      |
-           |  * 300 Token 事实注入区  |            |            |   * 8ms 毫秒级命中直返      |
+           |  * 300 Token 事实注入区  |            |            |   * 毫秒级本地流式直返      |
            |  * 300 Token 滑动去噪历史|            |            |   * SPU 规格更新自动失效    |
            +------------+------------+            |            +-------------------------+
                         |                         |
            +------------v-------------------------v------------+
            |                   双轨事实与知识检索层             |
            |  [硬件事实直查]: SQLite 3 + Pydantic v2 强类型约束 |
-           |  [专有名词倒排]: Rank-BM25 + jieba (型号 100% 召回) |
-           |  [稠密语义向量]: ChromaDB + FastEmbed (BGE 中文向量) |
-           |  [多路融合重排]: RRF (Reciprocal Rank Fusion, <1ms)|
+           |  [专有名词倒排]: Rank-BM25 + jieba 专有词索引召回  |
+           |  [稠密语义向量]: ChromaDB + FastEmbed (BGE 中文向量)|
+           |  [多路融合重排]: RRF (Reciprocal Rank Fusion 算法) |
            +--------------------------+------------------------+
                                       |
            +--------------------------v------------------------+
@@ -91,7 +91,7 @@
 ### 1. Pydantic v2 强类型双轨事实门禁（防幻觉）
 * 摒弃将商品规格直接塞入 Prompt 让大模型模糊记忆的传统做法；
 * 基于 [`ProductItem`](backend/core/models/product_specs.py) 定义严格数据契约，处理器、显卡功耗（TGP）、M.2 插槽数量、雷电接口、内存拓展上限直接从本地数据库直查注入，形成结构化事实锚点；
-* 真实测试下，核心硬件参数幻觉率降低至 **< 0.5%**。
+* 配合 500 道金标评测沙箱回归测试，对硬件参数失真实行一票否决。
 
 ### 2. 1000 Token 上下文严格预算账户模型
 * 针对多轮会话 Token 爆炸与注意力分散痛点，严格划分账户额度：
@@ -101,13 +101,13 @@
 * **助词去噪算法（Noise Stripping）**：通过正则引擎过滤“在吗”、“好的”、“知道了”等无实质意图的寒暄短语，长会话推理成本与时延保持恒定 $O(1)$。
 
 ### 3. 双引擎混合检索与轻量级 RRF 重排
-* **BM25 专有名词倒排**：针对 3C 领域的硬核专有名词（如 `M.2`、`PCIe 4.0`、`140W`、`全国联保`）实现 100% 命中，杜绝向量检索的“语义漂移”；
+* **BM25 专有名词倒排**：针对 3C 领域的硬核专有名词（如 `M.2`、`PCIe 4.0`、`140W`、`全国联保`）实现精准检索，杜绝纯向量检索的“语义漂移”；
 * **ChromaDB + FastEmbed**：本地 CPU 运行 `BAAI/bge-small-zh-v1.5` 进行自然语言口语化语义召回；
-* **RRF 倒数排名融合**：两路召回 Top-3 结果，通过公式 $\sum \frac{1}{k + rank}$ 进行无模型轻量重排（耗时 **< 1ms**），相比重型 Cross-Encoder 重排模型节省 200~400ms CPU 推理延迟。
+* **RRF 倒数排名融合**：两路召回 Top-3 结果，通过公式 $\sum \frac{1}{k + rank}$ 进行无模型轻量重排，相比重型 Cross-Encoder 重排模型大幅降低 CPU 推理开销。
 
 ### 4. 工业级语义缓存与主动失效机制
 * 基于 `DiskCache` 实现高频问答本地持久化缓存（键规则：`faq:{spu_code}:{md5(normalized_query)}`）；
-* 相同或同义高频咨询命中后，实现 **0 Token 消耗 + < 15ms 毫秒级极速流式打字机秒回**；
+* 相同或同义高频咨询命中后，实现 **0 Token 消耗与本地流式秒回**；
 * 提供 PIM 规格同步接口 [`POST /api/v1/products/sync`](backend/api/v1/products.py)，当商品配置变更时自动广播清理关联 SPU 的旧缓存，杜绝陈旧问答。
 
 ### 5. 离线进化工坊与 500 道金标评测沙箱闭环
@@ -120,53 +120,69 @@
 
 ---
 
-## 📊 核心指标与基准评测 (Benchmarks)
+## 📊 核心指标与测试验证 (Verification & Benchmarks)
 
-在单机本地测试环境（Intel i7 CPU / 16G RAM / 零 GPU 依赖）下的实测性能表现：
+测试执行环境：Windows 11 / AMD 16 核 / 14GB RAM / Python 3.13 / pytest 自动化套件（零警告通过）：
 
-| 评测维度 | 行业通用基线 | EvoRetail-Agent 实测表现 |
-| :--- | :--- | :--- |
-| **硬件参数断言准确率** | ~78.4%（传统 RAG） | **100%（一票否决通过）** |
-| **风控违禁词违规次数** | 偶发违规（~3.2%） | **0 次违规（零容忍拦截）** |
-| **SPIN 销售推进表现分** | 62.5 分 | **98.2 分（门禁线: 95.0）** |
-| **高频缓存命中响应延迟** | 1200ms+（调用云端 LLM） | **8ms（DiskCache 磁盘秒级回出）** |
-| **未缓存首字响应时间 (TTFT)** | 1800ms ~ 3500ms | **< 300ms（纯文本 SSE 打字机流）** |
-| **云端额外依赖账单** | 需维护云端向量库、Redis、GPU实例 | **¥ 0 元（全栈本地开源组件）** |
+| 验证项 / 模块 | 关键技术实现 | 测试套件与文件 | 实测状态 / 报告出处 |
+| :--- | :--- | :--- | :--- |
+| **Agent 工具调用与意图路由** | 4 大工具注册表 + ReAct 防死循环 | `tests/test_agent_tools.py`<br>`tests/test_agent_runner.py` | 意图路由准确率 **92.5% (37/40)**<br>详见 [`docs/evidence/tool_routing_mock.json`](docs/evidence/tool_routing_mock.json) |
+| **买家画像长记忆与预算管理** | 增量抽取覆盖 + 1000 Token 上下文账户 | `tests/test_buyer_profile.py`<br>`tests/test_slot_extractor.py`<br>`tests/test_context_budget.py` | 槽位抽取准确率 **96.12% (99/103 字段)**<br>20 轮对话画像常驻，组装开销 ≤ 1000 Token<br>详见 [`docs/evidence/slot_extraction_accuracy.json`](docs/evidence/slot_extraction_accuracy.json) |
+| **流式安全护栏与数值一致性** | 跨 Token 滑动句级缓冲器 + 硬件防虚假宣传 | `tests/test_output_guard.py`<br>`tests/test_numeric_guard.py` | 违禁词拆分拦截率 **100%**，合规文本无损透传<br>硬件反例拦截率 **100%**，正例误杀率 **0.0%**<br>详见 [`docs/evidence/guard_numeric_accuracy.json`](docs/evidence/guard_numeric_accuracy.json) |
+| **LLM-Judge 与自进化闭环** | 结构化归因 Critic + 真实 A/B 基线对比门禁 | `tests/test_critic.py`<br>`tests/test_optimizer.py`<br>`tests/test_evolution_sandbox.py` | 移除 80.0 虚假保底分，负向劣化候选版本 **100% 自动熔断**，演进审计落库 `evolution_runs` |
+| **全链路 Tracing 与高并发韧性** | 异步 SQLite WAL 模式 + 全链路可观测性 + 会话级滑动窗口限流 (15次/分) | `tests/test_async_db.py`<br>`tests/test_tracing.py`<br>`tests/test_resilience.py` | 50 协程并发读写 **100% 成功无锁库报错**<br>`GET /api/v1/traces/{trace_id}` 各指标真实非空<br>高频请求精准触发 HTTP **429** |
+| **管理写接口安全鉴权与 CORS** | `X-Admin-Token` 请求头校验 + 凭证源收敛 | `tests/test_auth.py` | 未鉴权访问 `/rollback` 与 `/sync` 精确阻断 (HTTP **401**)，数据库激活版本不被篡改 |
+| **全量自动化测试套件** | 覆盖 Phase 0 ~ Phase 6 全部功能矩阵 | `python -m pytest tests -v -W error::DeprecationWarning` | **46 passed in 11.35s，0 warnings，0 errors** |
+
+### 🚀 实测高并发性能基准 (Concurrency Benchmark)
+实测压测报告出处：[`docs/evidence/bench_report.json`](docs/evidence/bench_report.json)
+* **并发压测数**：10 并发（共 40 次真实端到端完整请求）
+* **请求成功率**：**100.0%**
+* **缓存命中延迟**：P50 = **121.41 ms**，P95 = **328.91 ms**
+* **未缓存流式首字时延 (TTFT)**：P50 = **95.07 ms**，P95 = **199.44 ms**
+* **系统处理吞吐量**：**19.97 QPS** (本地 CPU 单节点轻量级运行)
 
 ---
 
 ## 🔄 架构演进与重构背景
 
-本项目早期为火山引擎音视频数字人 Demo（依赖端侧麦克风/摄像头推拉流、RTC 传输、ASR 语音识别、TTS 语音合成及数字人渲染）。
+本项目早期为音视频数字人 Demo（依赖端侧麦克风/摄像头推拉流、RTC 传输、ASR 语音识别、TTS 语音合成及数字人渲染）。
 
-在实际电商导购场景下，原架构暴露出**端侧权限脆弱、建连延迟高达 2.5 秒以上、移动端弱网频繁丢帧、高昂 RTC 与算力账单**等致命缺陷。
+在实际电商导购场景下，原架构暴露出**端侧权限脆弱、建连延迟高、移动端弱网频繁丢帧、高昂 RTC 与算力账单**等致命缺陷。
 
 我们主导将整套系统彻底重构成现代纯文本轻量化架构：
 * 彻底剔除冗余 RTC 与音视频传输链路，全面切换为 **HTTP POST + Server-Sent Events (SSE)**；
-* 端到端首字响应时间从 **2500ms 压缩至 < 300ms**；
-* 降低带宽成本 98% 以上，兼容所有主流 Web/移动端浏览器，实现真正的生产级轻量高可用。
+* 消除音视频建连与语音处理延迟；
+* 大幅降低带宽与计算成本，兼容所有主流 Web/移动端浏览器，实现真正的轻量高可用。
 
 ---
 
 ## 🚀 快速复现与启动指南
 
-### 1. 环境准备
-* **Python**: 3.10+ (推荐 3.10 ~ 3.13)
-* **Node.js**: 16.0+
-
-### 2. 启动本地后端 API (FastAPI)
+### 方式一：Docker Compose 一键容器化启动 (推荐)
+已预置轻量化多阶段构建与健康检查：
 ```bash
-# 1. 克隆本仓库并进入目录
-git clone https://github.com/你的GitHub用户名/EvoRetail-Agent.git
-cd EvoRetail-Agent
+# 启动前端 (3000) 与后端 (8000) 双容器集群
+docker-compose up -d
 
-# 2. 安装 Python 后端依赖
+# 查看服务健康状态
+docker-compose ps
+```
+
+### 方式二：本地极速运行开发环境
+#### 1. 环境准备
+* **Python**: 3.10+ (推荐 3.10 ~ 3.13)
+* **Node.js**: 18.0+
+
+#### 2. 启动本地后端 API (FastAPI)
+```bash
+# 1. 安装 Python 后端依赖
 pip install -r backend/requirements.txt
 
-# 3. 配置环境变量 (可选，若不配置将自动使用内置 Mock 模式极速体验)
+# 2. 配置环境变量 (可选，若不配置将自动使用内置 Mock 模式极速体验)
 cp backend/.env.example backend/.env
 
-# 4. 启动 FastAPI 后端服务 (端口 8000)
+# 3. 启动 FastAPI 后端服务 (端口 8000)
 npm run start:backend
 # 或者: python -m uvicorn backend.api.server:app --host 0.0.0.0 --port 8000 --reload
 ```
@@ -174,7 +190,7 @@ npm run start:backend
 * **Swagger 交互式文档**: [http://localhost:8000/docs](http://localhost:8000/docs)
 * **服务健康检查**: [http://localhost:8000/health](http://localhost:8000/health)
 
-### 3. 启动前端客服 Web 界面 (React 18)
+#### 3. 启动前端客服 Web 界面 (React 18)
 ```bash
 # 启动 React 前端服务 (端口 3000)
 npm run start:frontend
@@ -193,40 +209,63 @@ npm run test:backend
 
 ```text
 EvoRetail-Agent/
-├── backend/                        # 核心后端模块 (FastAPI)
+├── .github/workflows/
+│   └── ci.yml                      # GitHub Actions 自动化 CI 流水线 (Pytest + React Build)
+├── backend/                        # 核心后端模块 (FastAPI + 异步 SQLite WAL)
+│   ├── agent/
+│   │   ├── tools.py                # 4 大 Agent 工具注册表与 OpenAI JSON Schema
+│   │   ├── runner.py               # ReAct 决策循环 + 本地意图路由 + 5步防死循环熔断
+│   │   └── slot_extractor.py       # 买家需求槽位抽取器 (确定性正则 + 可选 LLM 双模)
+│   ├── guardrails/
+│   │   └── output_guard.py         # 流式句级缓冲器 + 违禁词拦截 + 硬件数值一致性校验
 │   ├── api/
-│   │   ├── server.py               # FastAPI 主入口与路由挂载
+│   │   ├── server.py               # FastAPI 入口 (Lifespan 管理与 CORS 收敛)
+│   │   ├── auth.py                 # X-Admin-Token 敏感管理写接口鉴权
 │   │   └── v1/
-│   │       ├── chat.py             # SSE 流式问答与缓存分发接口
+│   │       ├── chat.py             # SSE 流式问答、画像记忆与输出护栏分发接口
 │   │       ├── products.py         # SPU 规格查询与 PIM 同步接口
-│   │       └── evolution.py        # 进化工坊、沙箱回归与版本回滚接口
+│   │       ├── evolution.py        # 进化工坊、沙箱回归与版本回滚接口
+│   │       └── traces.py           # 全链路可观测性 Tracing 查询接口
 │   ├── core/
-│   │   ├── database.py             # SQLite 3 嵌入式数据库驱动与自动播种
+│   │   ├── database.py             # SQLite 3 WAL 并发模式与 async_* 非阻塞访问层
 │   │   ├── cache.py                # DiskCache 高性能语义问答缓存
-│   │   ├── context_manager.py      # 1000 Token 上下文预算账户与去噪算法
+│   │   ├── context_manager.py      # 1000 Token 精确预算裁剪 (常驻买家画像槽位)
+│   │   ├── tracer.py               # 全链路 TraceSpan 追踪器 (TTFT / Token / 工具轨迹)
+│   │   ├── limiter.py              # 会话级滑动时间窗口限流器 (15次/分)
 │   │   ├── llm_client.py           # 统一可插拔 LLM 适配器 (支持 OpenAI 协议)
 │   │   └── models/
-│   │       ├── product_specs.py    # Pydantic v2 3C 硬件强类型模型
+│   │       ├── product_specs.py    # Pydantic v2 3C 硬件强类型模型与动态事实锚点
+│   │       ├── buyer_profile.py    # 买家画像槽位模型 (增量合并与改口覆盖)
 │   │       └── chat_schemas.py     # 会话协议与请求模型
 │   ├── rag/
 │   │   ├── bm25_retriever.py       # Rank-BM25 + jieba 专有名词倒排检索
-│   │   ├── chroma_store.py         # ChromaDB + FastEmbed 本地语义向量库
+│   │   ├── chroma_store.py         # ChromaDB + FastEmbed 本地语义向量库 (带容灾自愈)
 │   │   └── hybrid_retriever.py     # 双引擎多路召回与 RRF 融合重排
 │   ├── evolution/
-│   │   ├── critic.py               # Critic 历史会话流失归因诊断 Agent
-│   │   └── optimizer.py            # Prompt 增量补丁生成与版本热发布控制
+│   │   ├── critic.py               # Critic 会话流失归因 Agent (LLM-Judge + 规则双模)
+│   │   └── optimizer.py            # Optimizer A/B 基线对比门禁与负向劣化自动熔断
 │   └── eval/
-│       ├── assertions.py           # 硬件防幻觉与合规一票否决断言逻辑
-│       └── harness.py              # 500 道金标评测沙箱高并发回归执行器
+│       ├── assertions.py           # 硬件防幻觉与合规一票否决断言 (无虚假保底分)
+│       └── harness.py              # 500 道金标评测沙箱按比例分层抽样执行器
 ├── data/                           # 本地轻量数据持久化目录
-│   ├── mock_products.json          # 预置 3C 标杆机型硬件规格配置
-│   ├── golden_dataset_500.json     # 500 道金标自动化评测集
+│   ├── mock_products.json          # 10 款在售 3C 标杆机型硬件规格配置
+│   ├── golden_dataset_500.json     # 500 道金标自动化评测集 (覆盖全 10 款 SPU)
+│   ├── tool_routing_cases.json     # 40 条工具路由评测基准集
+│   ├── slot_cases.json             # 32 条买家槽位抽取评测集
+│   ├── guard_numeric_cases.json    # 36 条硬件数值护栏正反例评测集
 │   └── knowledge_docs/             # 官方售后、质保与赠品 Markdown 知识库
 ├── docs/
+│   ├── evidence/                   # 实测评测与压测证据 JSON 报告归档
 │   └── images/                     # 系统运行截图 (demo_overview / sandbox_eval)
+├── scripts/
+│   ├── eval_tool_routing.py        # 工具路由准确率评测脚本
+│   └── bench_concurrency.py        # 异步高并发与流式 TTFT 压测脚本
 ├── src/                            # 前端 Web 应用源码 (React 18 + Arco Design)
 │   └── pages/EcommerceCS/          # 售前导购前台页面与进化工坊抽屉组件
-├── tests/                          # 自动化测试用例
+├── tests/                          # 47 项全链路自动化单元测试与集成测试套件
+├── Dockerfile.backend              # 后端生产容器镜像构建文件
+├── Dockerfile.frontend             # 前端多阶段构建与 Nginx 容器镜像文件
+├── docker-compose.yml              # 双容器一键编排与健康检查配置
 ├── package.json                    # 前端依赖与一键起停脚本配置
 └── README.md                       # 详细项目技术设计与部署文档
 ```

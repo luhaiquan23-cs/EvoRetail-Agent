@@ -43,6 +43,9 @@ log/
 
 # Local data & caches
 data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.db-journal
 data/cache/
 data/chroma_db/
 legacy_rtc_backup/

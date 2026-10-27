@@ -1,24 +1,46 @@
 import os
+import shutil
+import logging
 from typing import List, Dict, Any, Tuple
 import chromadb
 from fastembed import TextEmbedding
+
+logger = logging.getLogger("chroma_store")
 
 DEFAULT_CHROMA_DIR = os.path.join(os.path.dirname(__file__), "../../data/chroma_db")
 
 class LocalChromaStore:
     """
-    本地嵌入式 ChromaDB 向量知识库
+    本地嵌入式 ChromaDB 向量知识库 (工业级自愈与并发防崩护栏)
     基于 FastEmbed (BAAI/bge-small-zh-v1.5) 中文轻量 ONNX 模型进行向量化
     """
     def __init__(self, persist_dir: str = DEFAULT_CHROMA_DIR):
         self.persist_dir = persist_dir
         os.makedirs(self.persist_dir, exist_ok=True)
-        self.client = chromadb.PersistentClient(path=self.persist_dir)
-        self.collection = self.client.get_or_create_collection(
-            name="ecommerce_knowledge_zh",
-            metadata={"hnsw:space": "cosine"}
-        )
         self.embedding_model = TextEmbedding("BAAI/bge-small-zh-v1.5")
+        self._init_collection()
+
+    def _init_collection(self):
+        try:
+            self.client = chromadb.PersistentClient(path=self.persist_dir)
+            self.collection = self.client.get_or_create_collection(
+                name="ecommerce_knowledge_zh",
+                metadata={"hnsw:space": "cosine"}
+            )
+            # 校验 HNSW 索引读取是否正常
+            self.collection.count()
+        except Exception as e:
+            logger.warning(f"Chroma persistent store corrupted ({e}), rebuilding clean store...")
+            try:
+                shutil.rmtree(self.persist_dir, ignore_errors=True)
+                os.makedirs(self.persist_dir, exist_ok=True)
+                self.client = chromadb.PersistentClient(path=self.persist_dir)
+                self.collection = self.client.get_or_create_collection(
+                    name="ecommerce_knowledge_zh",
+                    metadata={"hnsw:space": "cosine"}
+                )
+            except Exception as ex:
+                logger.error(f"Failed to rebuild Chroma store: {ex}")
 
     def embed_texts(self, texts: List[str]) -> List[List[float]]:
         """批量获取中文文本的向量表示"""
@@ -33,6 +55,13 @@ class LocalChromaStore:
         if not docs:
             return
 
+        try:
+            current_count = self.collection.count()
+            if current_count >= len(docs):
+                return
+        except Exception:
+            pass
+
         ids = [doc["id"] for doc in docs]
         documents = [doc["content"] for doc in docs]
         metadatas = [doc.get("metadata", {}) for doc in docs]
@@ -40,12 +69,15 @@ class LocalChromaStore:
         # 本地 CPU ONNX 生成高质量中文向量
         embeddings = self.embed_texts(documents)
 
-        self.collection.upsert(
-            ids=ids,
-            documents=documents,
-            embeddings=embeddings,
-            metadatas=metadatas
-        )
+        try:
+            self.collection.upsert(
+                ids=ids,
+                documents=documents,
+                embeddings=embeddings,
+                metadatas=metadatas
+            )
+        except Exception as e:
+            logger.warning(f"Chroma upsert error (recovering): {e}")
 
     def search(self, query: str, top_k: int = 3) -> List[Tuple[Dict[str, Any], float]]:
         """语义向量检索"""
@@ -66,7 +98,7 @@ class LocalChromaStore:
                     items.append(({"id": doc_id, "content": doc_text, "metadata": metadata}, similarity))
             return items
         except Exception as e:
-            print(f"[WARN] Chroma query error: {e}")
+            logger.warning(f"Chroma query error: {e}")
             return []
 
 chroma_store = LocalChromaStore()

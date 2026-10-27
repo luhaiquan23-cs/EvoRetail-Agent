@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: evoretail-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ADMIN_API_TOKEN=${ADMIN_API_TOKEN:-dev-secret-admin-token-2024}
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://api.deepseek.com}
+      - LLM_MODEL_NAME=${LLM_MODEL_NAME:-deepseek-chat}
+      - CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://localhost:80,http://localhost
+      - DB_PATH=/app/data/ecommerce_cs.db
+      - CACHE_DIR=/app/data/cache
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: evoretail-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+

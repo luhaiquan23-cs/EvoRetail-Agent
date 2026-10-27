@@ -104,7 +104,21 @@ class EvaluationHarness:
         start_time = time.time()
         cases = self.load_dataset()
         if sample_size and sample_size < len(cases):
-            cases = cases[:sample_size]
+            # 分层抽样 Stratified Sampling: 40% HARDWARE_ASSERT, 20% RISK_CONTROL, 40% SPIN_STAGE
+            hw_cases = [c for c in cases if c.get("case_type") == "HARDWARE_ASSERT"]
+            rc_cases = [c for c in cases if c.get("case_type") == "RISK_CONTROL"]
+            spin_cases = [c for c in cases if c.get("case_type") == "SPIN_STAGE"]
+
+            n_rc = max(1, int(round(sample_size * 0.2)))
+            n_hw = max(1, int(round(sample_size * 0.4)))
+            n_spin = max(1, sample_size - n_rc - n_hw)
+
+            while n_hw + n_rc + n_spin > sample_size and n_spin > 1:
+                n_spin -= 1
+            while n_hw + n_rc + n_spin < sample_size:
+                n_spin += 1
+
+            cases = hw_cases[:n_hw] + rc_cases[:n_rc] + spin_cases[:n_spin]
 
         total_cases = len(cases)
         semaphore = asyncio.Semaphore(concurrency)
@@ -131,9 +145,14 @@ class EvaluationHarness:
 
         cost_duration = round(time.time() - start_time, 2)
 
+        hw_results = [r for r in results if r["case_type"] == "HARDWARE_ASSERT"]
+        rc_results = [r for r in results if r["case_type"] == "RISK_CONTROL"]
+        spin_results = [r for r in results if r["case_type"] == "SPIN_STAGE"]
+
         report = {
             "status": "SUCCESS" if gatekeeper_approved else "FAILED",
             "candidate_version": context_manager.prompt_version,
+            "llm_mode": "mock" if force_mock else "live",
             "total_cases": total_cases,
             "passed_cases": passed_count,
             "zero_tolerance_violations": zero_tolerance_violations,
@@ -142,19 +161,21 @@ class EvaluationHarness:
             "gatekeeper_approved": gatekeeper_approved,
             "action": action,
             "cost_seconds": cost_duration,
+            "evaluated_counts": {
+                "hardware_assert": len(hw_results),
+                "risk_control": len(rc_results),
+                "spin_stage": len(spin_results)
+            },
             "breakdown": {
                 "hardware_assert_pass_rate": round(
-                    sum(1 for r in results if r["case_type"] == "HARDWARE_ASSERT" and r["passed"]) /
-                    max(1, sum(1 for r in results if r["case_type"] == "HARDWARE_ASSERT")) * 100, 1
-                ),
+                    sum(1 for r in hw_results if r["passed"]) / max(1, len(hw_results)) * 100, 1
+                ) if hw_results else 0.0,
                 "risk_control_pass_rate": round(
-                    sum(1 for r in results if r["case_type"] == "RISK_CONTROL" and r["passed"]) /
-                    max(1, sum(1 for r in results if r["case_type"] == "RISK_CONTROL")) * 100, 1
-                ),
+                    sum(1 for r in rc_results if r["passed"]) / max(1, len(rc_results)) * 100, 1
+                ) if rc_results else 0.0,
                 "spin_average_score": round(
-                    sum(r["score"] for r in results if r["case_type"] == "SPIN_STAGE") /
-                    max(1, sum(1 for r in results if r["case_type"] == "SPIN_STAGE")), 1
-                )
+                    sum(r["score"] for r in spin_results) / max(1, len(spin_results)), 1
+                ) if spin_results else 0.0
             }
         }
 

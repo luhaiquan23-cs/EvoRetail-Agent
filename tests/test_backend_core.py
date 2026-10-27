@@ -50,6 +50,45 @@ def test_pydantic_hardware_validation():
     except Exception as e:
         print(f"[PASS] Hardware validation error caught correctly: {e}")
 
+def test_product_to_anchor_fact_dynamic_generation():
+    with db.get_connection() as conn:
+        conn.execute("DELETE FROM products WHERE spu_code LIKE '%TEST%'")
+        conn.commit()
+    db.seed_mock_data()
+    products_data = db.list_products()
+    assert len(products_data) == 10, f"Expected 10 products, found {len(products_data)}"
+
+    for p_info in products_data:
+        item = db.get_product(p_info["spu_code"])
+        assert item is not None
+        fact = item.to_anchor_fact()
+
+        # 1. 固态插槽断言
+        if item.hardware.m2_slots_total == 1:
+            assert "双 M.2" not in fact, f"SPU {item.spu_code} has 1 M.2 slot but output contains '双 M.2'"
+            assert "加装第二根" not in fact, f"SPU {item.spu_code} has 1 M.2 slot but output contains '加装第二根'"
+            assert "单 M.2" in fact, f"SPU {item.spu_code} should mention '单 M.2'"
+        else:
+            assert "双 M.2" in fact, f"SPU {item.spu_code} has {item.hardware.m2_slots_total} slots and should mention '双 M.2'"
+            assert "加装扩展第二根固态" in fact
+
+        # 2. 内存插槽断言
+        if item.hardware.ram_slots == 1:
+            assert "双内存插槽" not in fact, f"SPU {item.spu_code} has 1 RAM slot but output contains '双内存插槽'"
+        else:
+            assert "双内存插槽" in fact, f"SPU {item.spu_code} has {item.hardware.ram_slots} RAM slots and should mention '双内存插槽'"
+
+        # 3. 核显功耗断言 (不把核显描述为独显满血释放)
+        is_integrated = (
+            any(k in item.hardware.gpu.lower() for k in ["集成", "核显", "iris", "arc", "radeon 780m", "radeon 680m"])
+            or ("核显" in item.hardware.gpu)
+            or ("集显" in item.hardware.gpu)
+        )
+        if is_integrated:
+            assert "独显满血释放" not in fact
+            assert "满血释放" not in fact, f"SPU {item.spu_code} is integrated GPU but claims 满血释放"
+    print("[PASS] test_product_to_anchor_fact_dynamic_generation passed for all 10 products!")
+
 def test_database_and_cache():
     db.seed_mock_data()
     products = db.list_products()
@@ -82,6 +121,7 @@ def test_context_budget_assembly():
 
 if __name__ == "__main__":
     test_pydantic_hardware_validation()
+    test_product_to_anchor_fact_dynamic_generation()
     test_database_and_cache()
     test_context_budget_assembly()
     print("\n[ALL PASS] Backend core unit tests passed successfully!")

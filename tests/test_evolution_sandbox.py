@@ -42,7 +42,13 @@ def test_assertions():
     spin_text = "这款显卡为 140W 满血释放，主流 3A 大作高画质流畅运行！请问您平时主要玩哪些游戏呢？"
     score, _ = score_spin_progression(spin_text, ["140W|满血", "3A|游戏", "哪些游戏|用途"])
     assert score >= 90.0
-    print("[PASS] Assertion rules verified.")
+
+    # 4. 验证彻底移除保底分 (BUG-08 验收标准)
+    # 不包含任何 SPIN 推进信号的长文本回复，得分必须等于 0.0 (不再被保底成 80.0)
+    long_irrelevant_text = "今天天气很好，窗外的阳光非常明媚，微风吹拂着树叶沙沙作响，我们一起去公园散步吧。"
+    zero_score, zero_msg = score_spin_progression(long_irrelevant_text, ["140W|满血", "3A|游戏", "哪些游戏|用途"])
+    assert zero_score == 0.0, f"Expected 0.0 without fallback, got {zero_score}"
+    print("[PASS] Assertion rules and zero fallback verified.")
 
 def test_sandbox_harness():
     report = asyncio.run(evaluation_harness.run_sandbox(concurrency=20, sample_size=30))
@@ -51,6 +57,27 @@ def test_sandbox_harness():
     assert report["overall_score"] >= 95.0
     assert report["gatekeeper_approved"] is True
     print(f"[PASS] Sandbox harness run: Score={report['overall_score']}, Approved={report['gatekeeper_approved']}")
+
+def test_sandbox_stratified_sampling_and_spu_coverage():
+    cases = evaluation_harness.load_dataset()
+    hw_cases = [c for c in cases if c.get("case_type") == "HARDWARE_ASSERT"]
+    covered_spus = set(c.get("spu_code") for c in hw_cases)
+    expected_spus = {
+        "HP-VICTUS-16", "HP-OMEN-16-SLIM", "HP-ZHAN-66-G5", "HP-OMEN-10-PRO",
+        "HP-OMEN-TRANSCEND-14", "HP-ZHAN-99-G5", "HP-STAR-BOOK-PRO-14",
+        "HP-ZHAN-X-14-G10", "HP-VICTUS-15-FA", "HP-ZHAN-66-G7-RYZEN"
+    }
+    assert expected_spus.issubset(covered_spus), f"Missing SPU coverage in HW assertions: {expected_spus - covered_spus}"
+
+    report = asyncio.run(evaluation_harness.run_sandbox(concurrency=20, sample_size=50))
+    assert report["total_cases"] == 50
+    assert report["evaluated_counts"]["hardware_assert"] == 20
+    assert report["evaluated_counts"]["risk_control"] == 10
+    assert report["evaluated_counts"]["spin_stage"] == 20
+    assert report["breakdown"]["hardware_assert_pass_rate"] > 0
+    assert report["breakdown"]["risk_control_pass_rate"] > 0
+    assert report["breakdown"]["spin_average_score"] > 0
+    print("[PASS] Sandbox stratified sampling and all 10 SPUs coverage verified.")
 
 def test_critic_and_optimizer():
     diag = critic_agent.analyze_recent_conversations(limit=20)
@@ -86,6 +113,7 @@ def test_evolution_api():
 if __name__ == "__main__":
     test_assertions()
     test_sandbox_harness()
+    test_sandbox_stratified_sampling_and_spu_coverage()
     test_critic_and_optimizer()
     test_evolution_api()
     print("\n[ALL PASS] Golden dataset evaluation & evolution verified successfully!")

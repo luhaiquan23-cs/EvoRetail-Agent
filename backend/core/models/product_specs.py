@@ -46,13 +46,37 @@ class ProductItem(BaseModel):
             if self.hardware.thunderbolt_port
             else "未配备雷电4接口，采用标准 Type-C 高速接口"
         )
+
+        # 1. 显卡释放描述 (区分独显与核显/集显)
+        is_integrated = (
+            any(k in self.hardware.gpu.lower() for k in ["集成", "核显", "iris", "arc", "radeon 780m", "radeon 680m"])
+            or ("核显" in self.hardware.gpu)
+            or ("集显" in self.hardware.gpu)
+        )
+        if is_integrated:
+            gpu_desc = f"CPU={self.hardware.cpu} | 显卡={self.hardware.gpu} ({self.hardware.tgp_watt}W 核心能效释放，低功耗长续航)"
+        else:
+            gpu_desc = f"CPU={self.hardware.cpu} | 显卡={self.hardware.gpu} ({self.hardware.tgp_watt}W 满血释放)"
+
+        # 2. 内存扩展性
+        if self.hardware.ram_slots >= 2:
+            ram_desc = f"双内存插槽={self.hardware.ram_slots}个(大满贯扩展，标配 {self.hardware.ram_installed}，最大支持 {self.hardware.ram_max_gb}G)"
+        else:
+            ram_desc = f"单内存插槽/板载内存={self.hardware.ram_slots}个(标配 {self.hardware.ram_installed}，最大支持 {self.hardware.ram_max_gb}G，不支持额外加装内存条)"
+
+        # 3. 固态硬盘扩展性 (单槽严禁输出双 M.2 或加装第二根)
+        if self.hardware.m2_slots_total >= 2:
+            m2_desc = f"双 M.2 固态插槽={self.hardware.m2_slots_total}个(支持加装扩展第二根固态，标配 {self.hardware.storage_installed})"
+        else:
+            m2_desc = f"单 M.2 固态插槽={self.hardware.m2_slots_total}个(标配 {self.hardware.storage_installed}，仅支持替换升级，无多余插槽，不支持加装固态)"
+
         return (
             f"【咨询商品规格事实（绝对权威，严禁违背或编造）】\n"
             f"- 商品名称: {self.title} (SPU: {self.spu_code})\n"
             f"- 官方售价: ¥{self.official_price:.2f}\n"
-            f"- 核心配置: CPU={self.hardware.cpu} | 显卡={self.hardware.gpu} ({self.hardware.tgp_watt}W 满血释放)\n"
+            f"- 核心配置: {gpu_desc}\n"
             f"- 屏幕素质: {self.display.screen_size}英寸 | {self.display.resolution} | {self.display.refresh_rate}Hz高刷 | {self.display.color_gamut} | 亮度={self.display.brightness_nits or 300}nits高亮防眩光\n"
-            f"- 扩展性: 双内存插槽={self.hardware.ram_slots}个(大满贯扩展，标配 {self.hardware.ram_installed}，最大支持 {self.hardware.ram_max_gb}G) | 双 M.2 固态插槽={self.hardware.m2_slots_total}个(支持加装扩展第二根固态，标配 {self.hardware.storage_installed})\n"
+            f"- 扩展性: {ram_desc} | {m2_desc}\n"
             f"- 接口与重量: 接口={tb_desc} | 裸机重量={self.hardware.weight_kg}kg全金属轻薄机身\n"
             f"- 特色亮点: {pitches}\n"
             f"- 赠品与保障: {self.gift_policy}，全国联保支持自行加装无损保修。\n"

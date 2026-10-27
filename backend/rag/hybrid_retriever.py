@@ -1,10 +1,12 @@
 import os
 import re
+import threading
 from typing import List, Dict, Any, Tuple
 from backend.rag.bm25_retriever import bm25_retriever
 from backend.rag.chroma_store import chroma_store
 
 DOCS_DIR = os.path.join(os.path.dirname(__file__), "../../data/knowledge_docs")
+_init_lock = threading.Lock()
 
 class HybridRetriever:
     """
@@ -57,7 +59,9 @@ class HybridRetriever:
         执行双引擎召回并通过 RRF 算法合并，返回控制在 150 Token 左右的精准知识片段
         """
         if not self._is_initialized:
-            self.load_and_index_docs()
+            with _init_lock:
+                if not self._is_initialized:
+                    self.load_and_index_docs()
 
         # 1. BM25 专有名词召回 Top 3
         bm25_results = bm25_retriever.search(query, top_k=3)

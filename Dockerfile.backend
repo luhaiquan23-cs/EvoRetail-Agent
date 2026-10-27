@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+# 设置工作目录与系统环境变量
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+# 安装基础构建依赖与健康检查工具
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安装 Python 依赖
+COPY backend/requirements.txt /app/backend/requirements.txt
+RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+
+# 复制代码与初始数据
+COPY backend /app/backend
+COPY data /app/data
+
+# 暴露 FastAPI 服务端口
+EXPOSE 8000
+
+# 容器健康检查
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# 启动 Uvicorn 高并发 ASGI 服务
+CMD ["python", "-m", "uvicorn", "backend.api.server:app", "--host", "0.0.0.0", "--port", "8000"]
+

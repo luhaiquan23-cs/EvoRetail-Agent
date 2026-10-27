@@ -1,0 +1,1035 @@
+{
+  "sample_size": 32,
+  "total_fields": 103,
+  "correct_fields": 99,
+  "accuracy_pct": 96.12,
+  "results": [
+    {
+      "id": "SLOT_001",
+      "query": "我是大一计算机系新生，预算6500以内，平时主要写代码和偶尔打英雄联盟，想买台耐用点的电脑。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 6500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "写代码",
+            "英雄联盟"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 6500.0,
+        "identity": "学生",
+        "use_cases": [
+          "英雄联盟",
+          "写代码"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_002",
+      "query": "我是建筑系学生，预算7500左右，主要用来跑AutoCAD建模和Lumion渲染，经常要去工作室。",
+      "field_hits": {
+        "identity": {
+          "expected": "建筑系学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 7500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "CAD建模",
+            "Lumion渲染"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 7500.0,
+        "identity": "建筑系学生",
+        "use_cases": [
+          "CAD建模",
+          "Lumion渲染",
+          "3D建模"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_003",
+      "query": "预算5000到6000元，平时主要做财务Excel审计和轻薄办公，天天出差需要经常带出门，越轻越好。",
+      "field_hits": {
+        "budget_min": {
+          "expected": 5000.0,
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 6000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": 5000.0,
+        "budget_max": 6000.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": true,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_004",
+      "query": "我是独立摄影师兼剪辑师，预算9000以内，平时用PR剪辑4K高清视频和Lightroom调色，想要色彩好的屏幕。",
+      "field_hits": {
+        "identity": {
+          "expected": "设计师",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 9000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "4K剪辑",
+            "调色后期"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 9000.0,
+        "identity": "设计师",
+        "use_cases": [
+          "4K剪辑",
+          "调色后期"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_005",
+      "query": "预算12000元，打算买一台满血旗舰游戏本通吃黑神话悟空和赛博朋克2077高画质，重量无所谓放在宿舍用。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 12000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3A游戏"
+          ],
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": false,
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 12000.0,
+        "identity": null,
+        "use_cases": [
+          "3A游戏"
+        ],
+        "portability_priority": false,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_006",
+      "query": "我是后端程序员，经常跑Docker容器和本地大模型调试，需要32G大内存，预算7000块以内。",
+      "field_hits": {
+        "identity": {
+          "expected": "程序员",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 7000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "写代码",
+            "AI开发"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 7000.0,
+        "identity": "程序员",
+        "use_cases": [
+          "AI开发"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_007",
+      "query": "预算4500以内想买台轻薄商务本，平时就是处理Word文档和上网课，轻一点方便带去图书馆。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 4500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 4500.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": true,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_008",
+      "query": "打算给高三毕业的孩子买台笔记本，预算5500元，大学学机械工程要用SolidWorks制图。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3D建模"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5500.0,
+        "identity": "学生",
+        "use_cases": [
+          "3D建模"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_009",
+      "query": "预算8000到10000元，打算买暗影精灵16 Slim，主要用来打瓦罗兰特和剪映剪视频。",
+      "field_hits": {
+        "budget_min": {
+          "expected": 8000.0,
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 10000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "电竞网游",
+            "视频剪辑"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-OMEN-16-SLIM",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": 8000.0,
+        "budget_max": 10000.0,
+        "identity": null,
+        "use_cases": [
+          "电竞网游",
+          "视频剪辑"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-OMEN-16-SLIM"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_010",
+      "query": "我是销售经常要在高铁上办公看方案，预算5000左右，必须轻薄便携长续航，战66适合吗？",
+      "field_hits": {
+        "identity": {
+          "expected": "商务人士",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5000.0,
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-ZHAN-66-G5",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5000.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": true,
+        "candidate_spus": [
+          "HP-ZHAN-66-G5"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_011",
+      "query": "预算6000以内想买光影精灵16打永劫无间和CS2，这款散热压得住吗？",
+      "field_hits": {
+        "budget_max": {
+          "expected": 6000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "电竞网游"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-VICTUS-16",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 6000.0,
+        "identity": null,
+        "use_cases": [
+          "电竞网游"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-VICTUS-16"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_012",
+      "query": "我是医学生，平时看文献查资料和偶尔看电影，预算4000到5000块，想选屏幕护眼高分辨率的。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_min": {
+          "expected": 4000.0,
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": 4000.0,
+        "budget_max": 5000.0,
+        "identity": "学生",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_013",
+      "query": "预算15000左右发烧级硬核玩家，看中暗影精灵10旗舰版，想追求4K光追极致画质。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 15000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3A游戏"
+          ],
+          "matched": false
+        },
+        "candidate_spu": {
+          "expected": "HP-OMEN-10-PRO",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 15000.0,
+        "identity": null,
+        "use_cases": [],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-OMEN-10-PRO"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_014",
+      "query": "搞工业产品设计的，天天跑Alias和Keyshot渲染，预算8000元以内，看上了战99工作站。",
+      "field_hits": {
+        "identity": {
+          "expected": "设计师",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 8000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3D建模"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-ZHAN-99-G5",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 8000.0,
+        "identity": "设计师",
+        "use_cases": [
+          "3D建模"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-ZHAN-99-G5"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_015",
+      "query": "想买一台能随时装进双肩包带去咖啡厅写文案的超轻薄本，预算5500以内，星Book Pro 14怎么样？",
+      "field_hits": {
+        "budget_max": {
+          "expected": 5500.0,
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-STAR-BOOK-PRO-14",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5500.0,
+        "identity": null,
+        "use_cases": [
+          "视频剪辑",
+          "轻办公"
+        ],
+        "portability_priority": true,
+        "candidate_spus": [
+          "HP-STAR-BOOK-PRO-14"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_016",
+      "query": "预算5000到7000元，平时主要玩原神和崩铁，偶尔用剪映剪下日常Vlog。",
+      "field_hits": {
+        "budget_min": {
+          "expected": 5000.0,
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 7000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "手游网游",
+            "视频剪辑"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": 5000.0,
+        "budget_max": 7000.0,
+        "identity": null,
+        "use_cases": [
+          "手游网游",
+          "视频剪辑"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_017",
+      "query": "公司给配的差旅办公本，预算6000以内要求带雷电4接口外接两台显示器，战X可以吗？",
+      "field_hits": {
+        "identity": {
+          "expected": "商务人士",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 6000.0,
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-ZHAN-X-14-G10",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 6000.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-ZHAN-X-14-G10"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_018",
+      "query": "大四考研学生党，天天泡图书馆复习刷题，预算4200以内，要求键盘打字静音续航持久。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 4200.0,
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": false
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 4200.0,
+        "identity": "学生",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_019",
+      "query": "预算9500元打算入手暗影精灵10 Slim 14寸，要用来做Blender建模和出差打游戏。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 9500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3D建模",
+            "3A游戏"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-OMEN-TRANSCEND-14",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 9500.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "3D建模",
+          "游戏"
+        ],
+        "portability_priority": true,
+        "candidate_spus": [
+          "HP-OMEN-TRANSCEND-14"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_020",
+      "query": "我是初中英语老师，预算4000左右用来制作PPT课件和上网课，战66七代锐龙版合适吗？",
+      "field_hits": {
+        "identity": {
+          "expected": "教师/白领",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 4000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-ZHAN-66-G7-RYZEN",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 4000.0,
+        "identity": "教师/白领",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-ZHAN-66-G7-RYZEN",
+          "HP-ZHAN-66-G5"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_021",
+      "query": "预算5200以内买光影精灵10主要玩PUBG吃鸡和GTA5，性能够不够用？",
+      "field_hits": {
+        "budget_max": {
+          "expected": 5200.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3A游戏"
+          ],
+          "matched": false
+        },
+        "candidate_spu": {
+          "expected": "HP-VICTUS-15-FA",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5200.0,
+        "identity": null,
+        "use_cases": [
+          "电竞网游"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-VICTUS-15-FA"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_022",
+      "query": "影视后期专业学生，预算8500块，主要用AE制作特效和达芬奇调色，要求性能释放强劲。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 8500.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "视频剪辑",
+            "调色后期"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 8500.0,
+        "identity": "学生",
+        "use_cases": [
+          "视频剪辑",
+          "调色后期"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_023",
+      "query": "预算6000以内打算在光影16和战99之间选一款，用来做CAD制图同时偶尔打打游戏。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 6000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "CAD建模",
+            "游戏"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 6000.0,
+        "identity": null,
+        "use_cases": [
+          "CAD建模",
+          "3D建模",
+          "游戏"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-VICTUS-16",
+          "HP-ZHAN-99-G5"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_024",
+      "query": "我是电商服装网店店主，预算5000元主要用来PS修图和千牛多开客服接待，要求轻薄静音。",
+      "field_hits": {
+        "identity": {
+          "expected": "电商白领",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公",
+            "修图调色"
+          ],
+          "matched": false
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5000.0,
+        "identity": "电商白领",
+        "use_cases": [
+          "调色后期"
+        ],
+        "portability_priority": true,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_025",
+      "query": "预算7000以内打算买台玩魔兽世界怀旧服和暗黑4的游戏本，重量无所谓只要散热好。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 7000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3A游戏"
+          ],
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": false,
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 7000.0,
+        "identity": null,
+        "use_cases": [
+          "3A游戏"
+        ],
+        "portability_priority": false,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_026",
+      "query": "女大学生想买一台外观好看机身轻巧的笔记本，预算5500元以内，看重星Book Pro 14的颜值。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5500.0,
+          "matched": true
+        },
+        "portability_priority": {
+          "expected": true,
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-STAR-BOOK-PRO-14",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5500.0,
+        "identity": "学生",
+        "use_cases": [
+          "视频剪辑"
+        ],
+        "portability_priority": true,
+        "candidate_spus": [
+          "HP-STAR-BOOK-PRO-14"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_027",
+      "query": "预算10000以内打算买台配置高的机器专门跑Stable Diffusion本地AI作画。",
+      "field_hits": {
+        "budget_max": {
+          "expected": 10000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "AI开发"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 10000.0,
+        "identity": null,
+        "use_cases": [
+          "AI开发"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_028",
+      "query": "金融行业分析师，预算5800以内，天天处理上万行金融数据和写研报，要求屏幕大且带小键盘。",
+      "field_hits": {
+        "identity": {
+          "expected": "商务人士",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 5800.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 5800.0,
+        "identity": "商务人士",
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_029",
+      "query": "预算4800元，想给家里老人买台日常看视频炒股用的轻薄笔记本，战66合适吗？",
+      "field_hits": {
+        "budget_max": {
+          "expected": 4800.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "轻办公"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-ZHAN-66-G5",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 4800.0,
+        "identity": null,
+        "use_cases": [
+          "轻办公"
+        ],
+        "portability_priority": true,
+        "candidate_spus": [
+          "HP-ZHAN-66-G5"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_030",
+      "query": "土木工程专业学生，预算7200块，要在工地上用广联达和CAD看图，需要机身耐摔抗造。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 7200.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "CAD建模"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 7200.0,
+        "identity": "学生",
+        "use_cases": [
+          "CAD建模"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    },
+    {
+      "id": "SLOT_031",
+      "query": "预算6800以内主要玩DOTA2和Apex英雄，光影精灵16能跑满电竞屏刷新率吗？",
+      "field_hits": {
+        "budget_max": {
+          "expected": 6800.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "电竞网游"
+          ],
+          "matched": true
+        },
+        "candidate_spu": {
+          "expected": "HP-VICTUS-16",
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": null,
+        "budget_max": 6800.0,
+        "identity": null,
+        "use_cases": [
+          "电竞网游"
+        ],
+        "portability_priority": null,
+        "candidate_spus": [
+          "HP-VICTUS-16"
+        ]
+      }
+    },
+    {
+      "id": "SLOT_032",
+      "query": "动漫制作专业大二学生，预算8000到9000元，主要使用Maya进行三维角色动画制作。",
+      "field_hits": {
+        "identity": {
+          "expected": "学生",
+          "matched": true
+        },
+        "budget_min": {
+          "expected": 8000.0,
+          "matched": true
+        },
+        "budget_max": {
+          "expected": 9000.0,
+          "matched": true
+        },
+        "use_cases": {
+          "expected": [
+            "3D建模"
+          ],
+          "matched": true
+        }
+      },
+      "extracted_profile": {
+        "budget_min": 8000.0,
+        "budget_max": 9000.0,
+        "identity": "学生",
+        "use_cases": [
+          "3D建模"
+        ],
+        "portability_priority": null,
+        "candidate_spus": []
+      }
+    }
+  ]
+}

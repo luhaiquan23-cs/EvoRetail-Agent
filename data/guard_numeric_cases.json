@@ -1,0 +1,235 @@
+[
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "HP 光影精灵16搭载 RTX 4060 独立显卡，支持 140W 满血性能释放。",
+    "is_negative": false,
+    "description": "光影精灵16功耗正确（140W）正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "这款光影精灵16内部配备双 M.2 插槽，支持加装第二根固态硬盘。",
+    "is_negative": false,
+    "description": "光影精灵16双M.2槽位正确正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "该机配备 2.5K 分辨率、240Hz 刷新率的电竞级显示屏。",
+    "is_negative": false,
+    "description": "光影精灵16屏幕刷新率正确（240Hz）正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "光影精灵16整机裸机重量约为 2.3kg，便携表现适中。",
+    "is_negative": false,
+    "description": "光影精灵16重量正确（2.3kg）正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "光影精灵16当前官方指导售价为 ¥6999 元，性价比非常突出。",
+    "is_negative": false,
+    "description": "光影精灵16售价正确（6999）正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "光影精灵16的显卡功耗只有 100W 释放，性能有一定缩水。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_TGP_WATT_CONFLICT",
+    "description": "光影精灵16功耗造假（误标为100W）反例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "光影精灵16屏幕刷新率仅有 144Hz，玩竞技游戏略有不足。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_REFRESH_RATE_CONFLICT",
+    "description": "光影精灵16刷新率造假（误标为144Hz）反例"
+  },
+  {
+    "spu_code": "HP-VICTUS-16",
+    "input_text": "光影精灵16官方指导价仅需 ¥4999，非常便宜直接下单吧。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_PRICE_CONFLICT",
+    "description": "光影精灵16价格造假（误标为4999）反例"
+  },
+  {
+    "spu_code": "HP-OMEN-16-SLIM",
+    "input_text": "暗影精灵16 Slim 搭载 140W 释放的 RTX 4070 独显，轻薄机身性能强劲。",
+    "is_negative": false,
+    "description": "暗影精灵16 Slim功耗正确（140W）正例"
+  },
+  {
+    "spu_code": "HP-OMEN-16-SLIM",
+    "input_text": "该机型整机重量控制在 2.1kg，在 16 英寸电竞本中非常轻巧。",
+    "is_negative": false,
+    "description": "暗影精灵16 Slim重量正确（2.1kg）正例"
+  },
+  {
+    "spu_code": "HP-OMEN-16-SLIM",
+    "input_text": "暗影精灵16 Slim 显卡只有 115W 性能释放，散热压制比较保守。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_TGP_WATT_CONFLICT",
+    "description": "暗影精灵16 Slim功耗造假（误标为115W）反例"
+  },
+  {
+    "spu_code": "HP-OMEN-16-SLIM",
+    "input_text": "这款机型重量仅 1.3kg，单手托起完全不费力。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_WEIGHT_CONFLICT",
+    "description": "暗影精灵16 Slim重量造假（误标为1.3kg）反例"
+  },
+  {
+    "spu_code": "HP-OMEN-10-PRO",
+    "input_text": "暗影精灵10 Pro 搭载 175W 极致满血 RTX 4080，图形渲染算力极强。",
+    "is_negative": false,
+    "description": "暗影精灵10 Pro功耗正确（175W）正例"
+  },
+  {
+    "spu_code": "HP-OMEN-10-PRO",
+    "input_text": "暗影精灵10 Pro 官方指导价为 ¥12999 元，定位旗舰发烧级游戏本。",
+    "is_negative": false,
+    "description": "暗影精灵10 Pro售价正确（12999）正例"
+  },
+  {
+    "spu_code": "HP-OMEN-10-PRO",
+    "input_text": "暗影精灵10 Pro 显卡功耗释放只有 140W，未达满血状态。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_TGP_WATT_CONFLICT",
+    "description": "暗影精灵10 Pro功耗造假（误标为140W）反例"
+  },
+  {
+    "spu_code": "HP-OMEN-10-PRO",
+    "input_text": "暗影精灵10 Pro 屏幕刷新率为 165Hz，画面清晰平滑。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_REFRESH_RATE_CONFLICT",
+    "description": "暗影精灵10 Pro刷新率造假（误标为165Hz）反例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14配备单 M.2 插槽，支持原装 1TB 固态替换升级。",
+    "is_negative": false,
+    "description": "星Book Pro 14单槽位正确正例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14裸机重量仅 1.44kg，非常适合出差与通勤携带。",
+    "is_negative": false,
+    "description": "星Book Pro 14重量正确（1.44kg）正例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14屏幕支持 120Hz 高刷新率，日常滑动丝滑流畅。",
+    "is_negative": false,
+    "description": "星Book Pro 14刷新率正确（120Hz）正例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14机身内置双 M.2 插槽，您可以加装第二根固态硬盘存储素材。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_M2_SLOTS_CONFLICT",
+    "description": "星Book Pro 14单槽虚标双M.2槽反例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14屏幕刷新率只有 60Hz，日常动画不够流畅。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_REFRESH_RATE_CONFLICT",
+    "description": "星Book Pro 14刷新率造假（误标为60Hz）反例"
+  },
+  {
+    "spu_code": "HP-STAR-BOOK-PRO-14",
+    "input_text": "星Book Pro 14官方售价只需 ¥3699，超低价格限时抢购。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_PRICE_CONFLICT",
+    "description": "星Book Pro 14价格造假（误标为3699）反例"
+  },
+  {
+    "spu_code": "HP-OMEN-TRANSCEND-14",
+    "input_text": "暗影精灵超越 14 裸机重量约 1.63kg，兼具强悍算力与便携属性。",
+    "is_negative": false,
+    "description": "超越14重量正确（1.63kg）正例"
+  },
+  {
+    "spu_code": "HP-OMEN-TRANSCEND-14",
+    "input_text": "超越 14 内部配备单 M.2 插槽，预装 1TB PCIe 4.0 高速固态。",
+    "is_negative": false,
+    "description": "超越14单槽位正确正例"
+  },
+  {
+    "spu_code": "HP-OMEN-TRANSCEND-14",
+    "input_text": "暗影精灵超越 14 拥有双 M.2 插槽，后期支持额外加装固态硬盘。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_M2_SLOTS_CONFLICT",
+    "description": "超越14单槽虚标双M.2槽反例"
+  },
+  {
+    "spu_code": "HP-OMEN-TRANSCEND-14",
+    "input_text": "超越 14 显卡释放高达 120W 满血功耗，性能毫无保留。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_TGP_WATT_CONFLICT",
+    "description": "超越14功耗造假（误标为120W）反例"
+  },
+  {
+    "spu_code": "HP-ZHAN-X-14-G10",
+    "input_text": "战X 14 锐龙版配备单 M.2 固态插槽，预装高速企业级固态。",
+    "is_negative": false,
+    "description": "战X 14单槽位正确正例"
+  },
+  {
+    "spu_code": "HP-ZHAN-X-14-G10",
+    "input_text": "战X 14 裸机重量仅 1.42kg，出差差旅轻盈随行。",
+    "is_negative": false,
+    "description": "战X 14重量正确（1.42kg）正例"
+  },
+  {
+    "spu_code": "HP-ZHAN-X-14-G10",
+    "input_text": "战X 14 支持加装第二根固态，双盘位方便企业数据备份。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_M2_SLOTS_CONFLICT",
+    "description": "战X 14单槽虚标加装第二根固态反例"
+  },
+  {
+    "spu_code": "HP-ZHAN-X-14-G10",
+    "input_text": "战X 14 裸机重量达到 2.1kg，机身非常厚重扎实。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_WEIGHT_CONFLICT",
+    "description": "战X 14重量造假（误标为2.1kg）反例"
+  },
+  {
+    "spu_code": "HP-ZHAN-66-G5",
+    "input_text": "战66 五代商用本配备 60Hz 护眼防眩光高色域屏幕。",
+    "is_negative": false,
+    "description": "战66 G5刷新率正确（60Hz）正例"
+  },
+  {
+    "spu_code": "HP-ZHAN-66-G5",
+    "input_text": "战66 五代官方指导售价为 ¥4299 元，性价比高。",
+    "is_negative": false,
+    "description": "战66 G5价格正确（4299）正例"
+  },
+  {
+    "spu_code": "HP-ZHAN-66-G5",
+    "input_text": "战66 五代配备 144Hz 电竞高刷屏，游戏画面无残影。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_REFRESH_RATE_CONFLICT",
+    "description": "战66 G5刷新率造假（误标为144Hz）反例"
+  },
+  {
+    "spu_code": "HP-VICTUS-15-FA",
+    "input_text": "光影精灵15 FA 搭载 75W 功耗释放的 RTX 2050 入门级光追独显。",
+    "is_negative": false,
+    "description": "光影精灵15 FA功耗正确（75W）正例"
+  },
+  {
+    "spu_code": "HP-VICTUS-15-FA",
+    "input_text": "光影精灵15 FA 显卡支持 140W 满血满载释放，性能强悍。",
+    "is_negative": true,
+    "expected_conflict_rule": "NUMERIC_TGP_WATT_CONFLICT",
+    "description": "光影精灵15 FA功耗造假（误标为140W）反例"
+  },
+  {
+    "spu_code": "HP-ZHAN-99-G5",
+    "input_text": "战99 移动工作站显卡功耗释放为 120W，通过 ISV 专业软件认证。",
+    "is_negative": false,
+    "description": "战99功耗正确（120W）正例"
+  }
+]
+

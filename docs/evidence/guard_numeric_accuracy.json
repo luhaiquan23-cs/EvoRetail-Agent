@@ -1,0 +1,8 @@
+{
+  "total_cases": 36,
+  "negative_cases": 16,
+  "positive_cases": 20,
+  "negative_interception_rate": 100.0,
+  "false_positive_rate": 0.0,
+  "status": "PASSED_100_PERCENT"
+}

@@ -1,0 +1,30 @@
+# 阶段 1: 前端静态构建
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# 安装构建依赖
+COPY package.json package-lock.json ./
+RUN npm ci || npm install --legacy-peer-deps
+
+# 复制前端源码并构建
+COPY . .
+ENV GENERATE_SOURCEMAP=false \
+    REACT_APP_API_BASE="http://localhost:8000/api/v1"
+RUN npm run build
+
+# 阶段 2: Nginx 生产托管
+FROM nginx:alpine
+
+# 将静态资源复制到 Nginx 根目录
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# 暴露前端访问端口
+EXPOSE 80
+
+# 容器健康检查
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD wget -q -O - http://localhost/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]
+

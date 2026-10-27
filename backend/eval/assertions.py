@@ -46,9 +46,5 @@ def score_spin_progression(response_text: str, expected_signals: List[str]) -> T
             matched += 1
 
     score = round((matched / len(expected_signals)) * 100.0, 1)
-    # 只要有起码的礼貌和场景关联，保底打分
-    if score < 60.0 and len(response_text) > 30:
-        score = 80.0
-
     return score, f"SPIN推进信号匹配度: {matched}/{len(expected_signals)} (得分: {score})"
 

@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-10-27T19:05:49",
+  "environment": {
+    "os": "Windows 11 (AMD64)",
+    "python_version": "3.13.13",
+    "cpu_count": 16,
+    "memory_gb": 13.86,
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD"
+  },
+  "concurrency": 10,
+  "total_requests": 40,
+  "success_rate": 100.0,
+  "cache_hits_benchmark": {
+    "requests": 20,
+    "latency_p50_ms": 121.41,
+    "latency_p90_ms": 300.51,
+    "latency_p95_ms": 328.91
+  },
+  "uncached_streaming_benchmark": {
+    "requests": 20,
+    "ttft_p50_ms": 95.07,
+    "ttft_p90_ms": 152.9,
+    "ttft_p95_ms": 199.44,
+    "total_latency_p50_ms": 95.1,
+    "total_latency_p95_ms": 199.48,
+    "throughput_qps": 19.97
+  }
+}
